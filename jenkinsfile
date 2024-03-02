@@ -1,0 +1,50 @@
+def buildNumberText() {
+	return "1.0.0"
+}
+pipeline {
+    agent any
+
+	environment {
+		DOCKERHUB_CREDENTIALS=credentials('lets5054')
+	}
+    stages {
+
+        stage('Package Application') {
+            steps {
+                echo 'Packaging the app into jars with maven'
+                sh "cd minikube-rest-api && ./gradlew build"
+
+            }
+        }
+		stage('Build') {
+		    when {
+                anyOf {
+                    branch 'stb'
+                    branch 'prod'
+                }
+            }
+
+            steps {
+                echo 'Building image'
+                sh "docker build --force-rm -t 'lets/minikube-rest-api:" + buildNumberText()  + "' ./minikube-rest-api"
+
+            }
+        }
+
+		stage('Kube Deploy') {
+            steps {
+                script {
+                        sh "sed -i 's/tag/" +  buildNumberText() + "/g' ./deployment.yml"
+                        sh "kubectl apply -f ./"
+                }
+            }
+		}
+      }
+
+  	post {
+  		always {
+  		    sh "docker image prune -af"
+            sh "docker builder prune -af"
+  		}
+  	}
+  }

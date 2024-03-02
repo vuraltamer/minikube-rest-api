@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minikube-rest-api
+  labels:
+    name: minikube-rest-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: minikube-rest-api
+  template:
+    metadata:
+      name: minikube-rest-api
+      labels:
+        name: minikube-rest-api
+    spec:
+      imagePullSecrets:
+        - name: registrypullsecret
+      containers:
+        - image: lets/minikube-rest-api:1.0.0
+          name: minikube-rest-api
+          ports:
+            - containerPort: 8088
+          envFrom:
+            - configMapRef:
+                name: minikube-rest-api-configmap

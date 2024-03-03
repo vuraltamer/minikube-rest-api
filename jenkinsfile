@@ -34,8 +34,9 @@ pipeline {
 		stage('Kube Deploy') {
             steps {
                 script {
+                        echo 'kubectl'
                         sh "sed -i 's/tag/" +  buildNumberText() + "/g' ./deployment.yml"
-                        sh "/usr/bin/kubectl kubectl apply -f ./"
+                        sh "/usr/local/bin/kubectl apply -f ./"
                 }
             }
 		}

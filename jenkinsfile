@@ -6,7 +6,6 @@ pipeline {
 
 	environment {
 		DOCKERHUB_CREDENTIALS=credentials('lets5054')
-		PATH = "/usr/local/bin:$PATH"
 	}
     stages {
 
@@ -36,7 +35,7 @@ pipeline {
             steps {
                 script {
                         sh "sed -i 's/tag/" +  buildNumberText() + "/g' ./deployment.yml"
-                        sh "kubectl apply -f ./"
+                        sh "/usr/bin/kubectl kubectl apply -f ./"
                 }
             }
 		}

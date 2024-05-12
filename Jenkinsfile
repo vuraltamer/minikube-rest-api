@@ -10,21 +10,25 @@ pipeline {
 	}
     stages {
         stage('Clone Repository') {
+            echo 'Clone Repository'
             steps {
                 git 'https://github.com/vuraltamer/minikube-rest-api.git'
             }
         }
         stage('Build') {
+            echo 'Build'
             steps {
                 sh './gradlew build' // Spring Boot projesini Gradle ile derliyoruz
             }
         }
         stage('Test') {
+            echo 'Test'
             steps {
                 sh './gradlew test' // Testleri çalıştırıyoruz
             }
         }
         stage('Package') {
+            echo 'Package'
             steps {
                 sh './gradlew bootJar' // Spring Boot uygulamasını JAR dosyasına paketliyoruz
             }

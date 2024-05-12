@@ -1,11 +1,13 @@
+def buildNumberText() {
+    return "1.0.0"
+}
+
 pipeline {
     agent any
 
-    environment {
-        GRADLE_HOME = tool 'Gradle'
-        PATH = "$PATH:$GRADLE_HOME/bin"
-    }
-
+	environment {
+		DOCKERHUB_CREDENTIALS=credentials('lets5054')
+	}
     stages {
         stage('Clone Repository') {
             steps {

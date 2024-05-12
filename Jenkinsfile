@@ -1,28 +1,39 @@
-def buildNumberText() {
-    return "1.0.0"
-}
-
 pipeline {
     agent any
 
-	environment {
-		DOCKERHUB_CREDENTIALS=credentials('lets5054')
-	}
+    environment {
+        GRADLE_HOME = tool 'Gradle'
+        PATH = "$PATH:$GRADLE_HOME/bin"
+    }
+
     stages {
-
-        stage('Package Application') {
+        stage('Clone Repository') {
             steps {
-                echo 'Packaging the app into jars with gradle'
-                sh "./gradlew build"
-
+                git 'https://github.com/vuraltamer/minikube-rest-api.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh './gradlew build' // Spring Boot projesini Gradle ile derliyoruz
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './gradlew test' // Testleri çalıştırıyoruz
+            }
+        }
+        stage('Package') {
+            steps {
+                sh './gradlew bootJar' // Spring Boot uygulamasını JAR dosyasına paketliyoruz
             }
         }
     }
-
-  	post {
-  		always {
-  		    sh "docker image prune -af"
-            sh "docker builder prune -af"
-  		}
-  	}
+    post {
+        success {
+            echo 'Proje başarıyla derlendi, test edildi ve paketlendi!'
+        }
+        failure {
+            echo 'Proje derleme, test veya paketleme aşamasında başarısız oldu.'
+        }
+    }
 }

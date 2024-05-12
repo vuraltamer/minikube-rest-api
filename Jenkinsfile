@@ -1,5 +1,7 @@
 def buildNumberText() {
-	return "1.0.0"
+    node {
+	    return "1.0.0"
+    }
 }
 pipeline {
     agent any

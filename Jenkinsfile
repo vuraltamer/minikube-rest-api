@@ -46,11 +46,9 @@ pipeline {
       }
 
   	post {
-        always {
-            node {
-                sh "docker image prune -af"
-                sh "docker builder prune -af"
-            }
-        }
+  		always {
+  		    sh "docker image prune -af"
+            sh "docker builder prune -af"
+  		}
   	}
   }

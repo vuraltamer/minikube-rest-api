@@ -16,7 +16,7 @@ pipeline {
 		stage('Build') {
             steps {
                 echo 'Building image'
-                sh "/usr/local/bin/docker build --force-rm -t 'lets/minikube-rest-api' ./minikube-rest-api"
+                sh "/usr/local/bin/docker build --force-rm -t 'lets/minikube-rest-api' ."
             }
         }
 

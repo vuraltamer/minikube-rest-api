@@ -35,6 +35,7 @@ pipeline {
         success {
           script {
             echo 'docker ps'
+            sh "/usr/local/bin/docker login"
             sh "/usr/local/bin/docker ps -a"
           }
         }

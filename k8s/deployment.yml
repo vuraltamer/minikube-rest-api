@@ -16,7 +16,8 @@ spec:
         name: minikube-rest-api
     spec:
       containers:
-        - image: lets/minikube-rest-api:1.0.0
+        - image: lets/minikube-rest-api:latest
+          imagePullPolicy: IfNotPresent
           name: minikube-rest-api
           ports:
             - containerPort: 8088

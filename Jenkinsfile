@@ -1,7 +1,6 @@
 def buildNumberText() {
     return "1.0.0"
 }
-
 pipeline {
     agent any
 
@@ -9,37 +8,45 @@ pipeline {
 		DOCKERHUB_CREDENTIALS=credentials('lets5054')
 	}
     stages {
-        stage('Clone Repository') {
+
+        stage('Package Application') {
             steps {
-                git 'https://github.com/vuraltamer/minikube-rest-api.git'
-                echo 'Clone Repository'
+                echo 'Packaging the app into jars with gradle'
+                sh "./gradlew build"
+
             }
         }
-        stage('Build') {
+		stage('Build') {
+		    when {
+                anyOf {
+                    branch 'stb'
+                    branch 'prod'
+                }
+            }
+
             steps {
-                sh './gradlew build' // Spring Boot projesini Gradle ile derliyoruz
-                 echo 'Build'
+                echo 'Building image'
+                sh "docker build --force-rm -t 'lets/minikube-rest-api:" + buildNumberText()  + "' ./minikube-rest-api"
+
             }
         }
-        stage('Test') {
+
+		stage('Kube Deploy') {
             steps {
-                sh './gradlew test' // Testleri çalıştırıyoruz
-                echo 'Test'
+                script {
+                        sh "chmod a+x kubectl"
+                        echo 'kubectl'
+                        sh "sed -i 's/tag/" +  buildNumberText() + "/g' ./k8s/deployment.yml"
+                        sh "/usr/local/bin/kubectl apply -f ./k8s/"
+                }
             }
-        }
-        stage('Package') {
-            steps {
-                sh './gradlew bootJar' // Spring Boot uygulamasını JAR dosyasına paketliyoruz
-                echo 'Package'
-            }
-        }
-    }
-    post {
-        success {
-            echo 'Proje başarıyla derlendi, test edildi ve paketlendi!'
-        }
-        failure {
-            echo 'Proje derleme, test veya paketleme aşamasında başarısız oldu.'
-        }
-    }
+		}
+      }
+
+  	post {
+  		always {
+  		    sh "docker image prune -af"
+            sh "docker builder prune -af"
+  		}
+  	}
 }

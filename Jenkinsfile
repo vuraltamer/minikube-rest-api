@@ -2,11 +2,7 @@ def buildNumberText() {
     return "1.0.0"
 }
 pipeline {
-    agent {
-        docker {
-            image 'openjdk:17-alpine'
-        }
-    }
+    agent any
 
     stages {
 

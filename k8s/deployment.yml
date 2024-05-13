@@ -16,7 +16,7 @@ spec:
         name: minikube-rest-api
     spec:
       containers:
-        - image: lets/minikube-rest-api:tag
+        - image: lets/minikube-rest-api
           name: minikube-rest-api
           ports:
             - containerPort: 8088

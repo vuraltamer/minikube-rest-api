@@ -32,7 +32,6 @@ pipeline {
                 script {
                         sh "chmod a+x /opt/homebrew/bin/kubectl"
                         echo 'kubectl'
-                        sh "sed -i 's/tag/" +  buildNumberText() + "/g' ./k8s/deployment.yml"
                         sh "/opt/homebrew/bin/kubectl apply -f ./k8s/"
                 }
             }

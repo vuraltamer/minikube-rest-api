@@ -20,7 +20,7 @@ spec:
           imagePullPolicy: IfNotPresent
           name: minikube-rest-api
           ports:
-            - containerPort: 8088
+            - containerPort: 8590
           envFrom:
             - configMapRef:
                 name: minikube-rest-api-configmap

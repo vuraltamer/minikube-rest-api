@@ -14,13 +14,6 @@ pipeline {
             }
         }
 		stage('Build') {
-		    when {
-                anyOf {
-                    branch 'stb'
-                    branch 'prod'
-                }
-            }
-
             steps {
                 echo 'Building image'
                 sh "docker build --force-rm -t 'lets/minikube-rest-api' ./minikube-rest-api"
@@ -42,7 +35,6 @@ pipeline {
         success {
           script {
             echo 'docker ps'
-            sh "docker ps"
           }
         }
   	}

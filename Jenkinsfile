@@ -4,9 +4,6 @@ def buildNumberText() {
 pipeline {
     agent any
 
-	environment {
-		DOCKERHUB_CREDENTIALS=credentials('lets5054')
-	}
     stages {
 
         stage('Package Application') {

@@ -44,9 +44,10 @@ pipeline {
       }
 
   	post {
-  		always {
-  		    sh "docker image prune -af"
-            sh "docker builder prune -af"
-  		}
+        success {
+          script {
+            echo 'kubectl'
+          }
+        }
   	}
 }

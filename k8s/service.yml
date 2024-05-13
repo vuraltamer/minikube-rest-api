@@ -5,9 +5,9 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: minikube-rest-api
+    name: minikube-rest-api
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8590
+      targetPort: 8088
       nodePort: 30007

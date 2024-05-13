@@ -31,10 +31,10 @@ pipeline {
 		stage('Kube Deploy') {
             steps {
                 script {
-                        sh "chmod a+x kubectl"
+                        sh "chmod a+x ./opt/homebrew/bin/kubectl"
                         echo 'kubectl'
                         sh "sed -i 's/tag/" +  buildNumberText() + "/g' ./k8s/deployment.yml"
-                        sh "/usr/local/bin/kubectl apply -f ./k8s/"
+                        sh "/opt/homebrew/bin/kubectl apply -f ./k8s/"
                 }
             }
 		}

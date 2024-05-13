@@ -23,15 +23,14 @@ pipeline {
 
             steps {
                 echo 'Building image'
-                sh "docker build --force-rm -t 'lets/minikube-rest-api:" + buildNumberText()  + "' ./minikube-rest-api"
-
+                sh "docker build --force-rm -t 'lets/minikube-rest-api' ./minikube-rest-api"
             }
         }
 
 		stage('Kube Deploy') {
             steps {
                 script {
-                        sh "chmod a+x ./opt/homebrew/bin/kubectl"
+                        sh "chmod a+x /opt/homebrew/bin/kubectl"
                         echo 'kubectl'
                         sh "sed -i 's/tag/" +  buildNumberText() + "/g' ./k8s/deployment.yml"
                         sh "/opt/homebrew/bin/kubectl apply -f ./k8s/"
@@ -43,7 +42,8 @@ pipeline {
   	post {
         success {
           script {
-            echo 'kubectl'
+            echo 'docker ps'
+            sh "docker ps"
           }
         }
   	}

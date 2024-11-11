@@ -23,7 +23,7 @@ pipeline {
 		stage('Kube Deploy') {
             steps {
                 script {
-                        sh "chmod a+x /opt/homebrew/bin/kubectl"
+                        sh "chmod a+x /usr/local/bin/kubectl"
                         echo 'kubectl'
                         sh "/opt/homebrew/bin/kubectl apply -f ./k8s/"
                 }
